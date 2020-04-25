@@ -31,5 +31,5 @@ val dataSourceModule: Module = module {
 
 val apiModule: Module = module {
     single(named("retrofitInstance")) { Network().getRetrofitInstance() }
-    single { get<Retrofit>(named("retrofit")).create(GeoApi::class.java) }
+    single { get<Retrofit>(named("retrofitInstance")).create(GeoApi::class.java) }
 }
