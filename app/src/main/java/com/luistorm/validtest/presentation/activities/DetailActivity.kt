@@ -1,11 +1,13 @@
 package com.luistorm.validtest.presentation.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.luistorm.validtest.R
 import com.luistorm.validtest.data.model.Artist
 import com.luistorm.validtest.data.model.Track
+import com.luistorm.validtest.presentation.extensions.setSafeOnClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 
@@ -37,6 +39,15 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+        textViewUrl.setSafeOnClickListener {
+            goToWeb(textViewUrl.text.toString())
+        }
+    }
+
+    private fun goToWeb(url: String) {
+        val intent = Intent(this, WebActivity::class.java)
+        intent.putExtra(WebActivity.URL, url)
+        startActivity(intent)
     }
 
     companion object {
