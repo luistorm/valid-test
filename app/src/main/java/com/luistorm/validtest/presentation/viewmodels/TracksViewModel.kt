@@ -24,11 +24,11 @@ class TracksViewModel(private val tracksUC: TracksUC): ViewModel() {
             tracksUC.getTopTracks(country, hasInternet, pageNumber)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .doOnError { _messagesLiveData.value = it.message }
-                .subscribe {
+                .subscribe ({
                     _tracksLiveData.value = it.tracks.track
+                    if(hasInternet) tracksUC.insertTrack(it.tracks.track)
                     pageNumber++
-                }
+                }, { _messagesLiveData.value = it.message })
         )
     }
 }

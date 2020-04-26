@@ -28,11 +28,13 @@ class ArtistsViewModel(private val artistsUC: ArtistsUC): ViewModel() {
             artistsUC.getTopArtists(country, hasInternet, pageNumber)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .doOnError { _messagesLiveData.value = it.message }
-                .subscribe {
+                .subscribe({
                     _artistsLiveData.value = it.topArtists.artist
+                    if(hasInternet) artistsUC.insertArtists(it.topArtists.artist)
                     pageNumber++
-                }
+                }, {
+                    _messagesLiveData.value = it.message
+                })
         )
     }
 
