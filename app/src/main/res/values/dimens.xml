@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="small_image_dim">100dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="text_size_12sp">12sp</dimen>
+    <dimen name="elevation">10dp</dimen>
+    <dimen name="corner_radio">4dp</dimen>
+</resources>
