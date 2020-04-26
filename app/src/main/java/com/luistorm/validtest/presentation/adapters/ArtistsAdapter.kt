@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.luistorm.validtest.R
 import com.luistorm.validtest.data.model.Artist
+import com.luistorm.validtest.presentation.extensions.setSafeOnClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.artists_track_item.view.*
 
-class ArtistsAdapter: RecyclerView.Adapter<ArtistsAdapter.ArtistsViewHolder>() {
+class ArtistsAdapter(private val onArtistSelectedListener: (Artist) -> Unit): RecyclerView.Adapter<ArtistsAdapter.ArtistsViewHolder>() {
 
     private val artists: MutableList<Artist> = mutableListOf()
 
@@ -21,6 +22,7 @@ class ArtistsAdapter: RecyclerView.Adapter<ArtistsAdapter.ArtistsViewHolder>() {
         holder.itemView.textViewName.text = artists[position].name
         holder.itemView.textViewListeners.text = holder.itemView.context.getString(R.string.listeners, artists[position].listeners.toString())
         Picasso.get().load(artists[position].getSmallImage()).into(holder.itemView.imageView)
+        holder.itemView.itemContainer.setSafeOnClickListener { onArtistSelectedListener(artists[position]) }
     }
 
     fun addItems(newArtists: List<Artist>) {

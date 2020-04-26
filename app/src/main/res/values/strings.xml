@@ -4,4 +4,5 @@
     <string name="top_tracks">Top Tracks</string>
     <string name="listeners">Listeners: %1$s</string>
     <string name="artist">Artist: %1$s</string>
+    <string name="rank">Rank: %1$s</string>
 </resources>

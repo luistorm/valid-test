@@ -1,6 +1,7 @@
 package com.luistorm.validtest.presentation.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.luistorm.validtest.R
+import com.luistorm.validtest.data.model.Artist
+import com.luistorm.validtest.data.model.Track
+import com.luistorm.validtest.presentation.activities.DetailActivity
 import com.luistorm.validtest.presentation.adapters.ArtistsAdapter
 import com.luistorm.validtest.presentation.viewmodels.ArtistsViewModel
 import kotlinx.android.synthetic.main.fragment_artists.*
@@ -34,18 +38,18 @@ class ArtistsFragment : Fragment() {
         artistsViewModel.getTopArtists("colombia", verifyAvailableNetwork())
     }
 
-    fun initViews() {
-        artistsAdapter = ArtistsAdapter()
+    private fun initViews() {
+        artistsAdapter = ArtistsAdapter { goToDetail(it) }
         recyclerView.adapter = artistsAdapter
     }
 
-    fun verifyAvailableNetwork() : Boolean{
+    private fun verifyAvailableNetwork() : Boolean{
         val connectivityManager = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return  networkInfo != null && networkInfo.isConnected
     }
 
-    fun setListenersAndObservers() {
+    private fun setListenersAndObservers() {
         artistsViewModel.artistsLiveData.observe(this, Observer {
             artistsAdapter.addItems(it)
         })
@@ -60,6 +64,12 @@ class ArtistsFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun goToDetail(artist: Artist) {
+        val intent = Intent(context, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.ARTIST, artist)
+        startActivity(intent)
     }
 
     companion object {

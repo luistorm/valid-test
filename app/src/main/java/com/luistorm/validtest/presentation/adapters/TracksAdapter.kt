@@ -3,14 +3,15 @@ package com.luistorm.validtest.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.luistorm.validtest.R
-import com.luistorm.validtest.data.model.Artist
 import com.luistorm.validtest.data.model.Track
+import com.luistorm.validtest.presentation.extensions.setSafeOnClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.artists_track_item.view.*
 
-class TracksAdapter: RecyclerView.Adapter<TracksAdapter.TracksViewHolder>() {
+class TracksAdapter(private val onTrackSelectedListener: (Track) -> Unit): RecyclerView.Adapter<TracksAdapter.TracksViewHolder>() {
 
     private val tracks: MutableList<Track> = mutableListOf()
 
@@ -24,7 +25,10 @@ class TracksAdapter: RecyclerView.Adapter<TracksAdapter.TracksViewHolder>() {
         holder.itemView.textViewListeners.text = holder.itemView.context.getString(R.string.listeners, tracks[position].listeners.toString())
         holder.itemView.textViewArtist.visibility = View.VISIBLE
         holder.itemView.textViewArtist.text = holder.itemView.context.getString(R.string.artist, tracks[position].artist.name)
+        holder.itemView.textViewRank.visibility = View.VISIBLE
+        holder.itemView.textViewRank.text = holder.itemView.context.getString(R.string.artist, tracks[position].rank.rank.toString())
         Picasso.get().load(tracks[position].getSmallImage()).into(holder.itemView.imageView)
+        holder.itemView.itemContainer.setSafeOnClickListener { onTrackSelectedListener(tracks[position]) }
     }
 
     fun addItems(newTracks: List<Track>) {

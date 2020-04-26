@@ -1,6 +1,7 @@
 package com.luistorm.validtest.presentation.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.luistorm.validtest.R
+import com.luistorm.validtest.data.model.Track
+import com.luistorm.validtest.presentation.activities.DetailActivity
 import com.luistorm.validtest.presentation.adapters.TracksAdapter
 import com.luistorm.validtest.presentation.viewmodels.TracksViewModel
 import kotlinx.android.synthetic.main.fragment_artists.*
@@ -33,18 +36,18 @@ class TracksFragment : Fragment() {
         tracksViewModel.getTopTracks("colombia", verifyAvailableNetwork())
     }
 
-    fun initViews() {
-        tracksAdapter = TracksAdapter()
+    private fun initViews() {
+        tracksAdapter = TracksAdapter { goToDetail(it) }
         recyclerView.adapter = tracksAdapter
     }
 
-    fun verifyAvailableNetwork() : Boolean{
+    private fun verifyAvailableNetwork() : Boolean{
         val connectivityManager = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return  networkInfo != null && networkInfo.isConnected
     }
 
-    fun setListenersAndObservers() {
+    private fun setListenersAndObservers() {
         tracksViewModel.tracksLiveData.observe(this, Observer {
             tracksAdapter.addItems(it)
         })
@@ -59,6 +62,12 @@ class TracksFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun goToDetail(track: Track) {
+        val intent = Intent(context, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.TRACK, track)
+        startActivity(intent)
     }
 
     companion object {
